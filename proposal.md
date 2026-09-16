@@ -16,4 +16,3 @@ Verification:
 5. Confirm no leftover global state (like a last-prediction variable) returns another tenant’s data.
 
 Category: Software engineering - Multi-tenant isolation 
-w
