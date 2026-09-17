@@ -14,7 +14,7 @@ from fastapi import HTTPException
 
 userkey : Dict[str, Dict[str, Any]] = {} 
 MAIN_DATA_PATH = Path("data.json")
-thread_lock = threading.lock()
+thread_lock = threading.Lock()
 
 
 ##file part 
