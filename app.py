@@ -4,6 +4,7 @@ from pathlib import Path
 import json
 from pydantic import BaseModel
 import uuid
+from fastapi import HTTPException
 
 userkey : Dict[str, Dict[str, Any]] = {} 
 finalPrediction : Optional[Dict[str, Any]] = None  #global prediction final and none at first 
@@ -64,9 +65,20 @@ def predict(res:PredictModel):
     MAIN_DATA_PATH.write_text(json.dumps({"finalPrediction": finalPrediction, "userkey": userkey}, indent=2))
     return pred_data
 
+def get_predict(prediction_id: str, tenant_id :str=None):
+    try:
+        for rec in userkey.values():
+            if rec.get("prediction_id") == prediction_id:
+                return rec
+
+        if finalPrediction is not None:
+            return finalPrediction
+    except HTTPException:
+        return "not found"
+    
 
 
 
 main.post("/clear")(clear)
 main.post("/predict")(predict)
-
+main.get("/prediction/{prediction_id}")(get_predict)
